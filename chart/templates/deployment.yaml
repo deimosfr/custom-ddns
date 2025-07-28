@@ -43,9 +43,15 @@ spec:
           args:
             - "--config"
             - "/app/config/config.yaml"
+            - "--health-port"
+            - "8080"
           env:
             - name: RUST_LOG
               value: "debug"
+          ports:
+            - name: health
+              containerPort: 8080
+              protocol: TCP
           volumeMounts:
             - name: config
               mountPath: /app/config

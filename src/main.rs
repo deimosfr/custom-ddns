@@ -2,6 +2,7 @@ use clap::Parser;
 use custom_ddns::config::{Config, ConfigDnsProvider, DnsRecordConfig};
 use custom_ddns::dns::cloudflare::CloudflareDns;
 use custom_ddns::dns::{DnsClient, DnsProvider, DnsRecordCloudflare};
+use custom_ddns::router::start_health_server;
 use custom_ddns::sources::IpSource;
 use custom_ddns::sources::freebox::FreeboxSource;
 use custom_ddns::utils::get_ip_version;
@@ -13,6 +14,9 @@ struct Args {
     /// Path to the configuration file
     #[arg(short, long, default_value = "config.yaml")]
     config: String,
+    /// Port for the health check server
+    #[arg(long, default_value = "8080")]
+    health_port: u16,
 }
 
 #[tokio::main]
@@ -25,14 +29,17 @@ async fn main() -> Result<(), anyhow::Error> {
         .init();
     info!("Starting Custom DDNS");
 
+    // Start health check server
     let args = Args::parse();
+    let mut handles = Vec::new();
+    let health_handle = tokio::spawn(start_health_server(args.health_port));
+    handles.push(health_handle);
+
     debug!("Loading config from {}", args.config);
 
     match Config::from_file(&args.config) {
         Ok(config) => {
             info!("Configuration loaded successfully");
-
-            let mut handles = Vec::new();
 
             for record in config.dns_records {
                 let handle = tokio::spawn(process_record(record));
