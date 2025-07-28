@@ -1,0 +1,26 @@
+# Stage 1: Build stage
+FROM rust:1.87.0-alpine AS builder
+
+RUN apk add --no-cache \
+    curl \
+    build-base \
+    pkgconfig \
+    musl-dev
+
+WORKDIR /app
+COPY . ./
+RUN cargo build --release
+
+# Stage 2: Runtime stage  
+FROM alpine:latest AS runtime
+
+RUN apk add --no-cache \
+    ca-certificates \
+    && adduser -D -s /bin/sh app
+
+WORKDIR /app
+COPY --from=builder /app/target/release/custom-ddns /app/custom-ddns
+RUN chown app:app /app/custom-ddns
+USER app
+
+ENTRYPOINT ["/app/custom-ddns"] 

@@ -20,7 +20,7 @@ Custom DDNS automatically monitors your IP address and updates DNS records when 
 - 🛡️ **Input Validation**: Robust validation for IP addresses and DNS records
 - 💾 **Memory Efficient**: Minimal resource usage with smart caching
 - 🔄 **Graceful Shutdown**: Proper signal handling for clean termination
-- 🏗️ **Multi-Architecture**: Native binaries for Linux, macOS, and Windows (AMD64 + ARM64)
+- 🏗️ **Multi-Architecture**: Native binaries for Linux and macOS (AMD64 + ARM64)
 - 🐳 **Container Ready**: Docker images for both Debian and Alpine with multi-arch support
 
 ## 🚀 Quick Start
@@ -37,11 +37,10 @@ Custom DDNS automatically monitors your IP address and updates DNS records when 
 
 #### Option 1: Download Pre-built Binaries (Recommended)
 
-Download the latest binary for your platform from the [Releases page](https://github.com/yourusername/custom-ddns/releases):
+Download the latest binary for your platform from the [Releases page](https://github.com/deimosfr/custom-ddns/releases):
 
 - **Linux**: `custom-ddns-linux-amd64` or `custom-ddns-linux-arm64`
-- **macOS**: `custom-ddns-macos-amd64` or `custom-ddns-macos-arm64`  
-- **Windows**: `custom-ddns-windows-amd64.exe` or `custom-ddns-windows-arm64.exe`
+- **macOS**: `custom-ddns-macos-amd64` or `custom-ddns-macos-arm64`
 
 ```bash
 # Make executable (Linux/macOS)
@@ -55,7 +54,7 @@ chmod +x custom-ddns-*
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/custom-ddns.git
+git clone https://github.com/deimosfr/custom-ddns.git
 cd custom-ddns
 
 # Build the project
@@ -71,13 +70,26 @@ cargo build --release
 
 ```bash
 # Debian-based (default, recommended)
-docker pull ghcr.io/yourusername/custom-ddns:latest
-docker run -v ./config.yaml:/app/config.yaml ghcr.io/yourusername/custom-ddns:latest
+docker pull ghcr.io/deimosfr/custom-ddns:latest
+docker run -v ./config.yaml:/app/config.yaml ghcr.io/deimosfr/custom-ddns:latest
 
 # Alpine-based (smaller size)
-docker pull ghcr.io/yourusername/custom-ddns:latest-alpine
-docker run -v ./config.yaml:/app/config.yaml ghcr.io/yourusername/custom-ddns:latest-alpine
+docker pull ghcr.io/deimosfr/custom-ddns:latest-alpine
+docker run -v ./config.yaml:/app/config.yaml ghcr.io/deimosfr/custom-ddns:latest-alpine
+
+# Specific version (replace v0.1.0 with desired version)
+docker pull ghcr.io/deimosfr/custom-ddns:v0.1.0
+docker pull ghcr.io/deimosfr/custom-ddns:v0.1.0-alpine
 ```
+
+#### Available Image Tags
+
+- `latest` - Latest Debian-based image (multi-arch: amd64, arm64)
+- `latest-alpine` - Latest Alpine-based image (multi-arch: amd64, arm64)  
+- `v{VERSION}` - Specific version Debian-based (e.g., `v0.1.0`)
+- `v{VERSION}-alpine` - Specific version Alpine-based (e.g., `v0.1.0-alpine`)
+
+All images support both AMD64 and ARM64 architectures and are automatically built from the latest releases.
 
 #### Build Locally
 
@@ -262,16 +274,15 @@ graph LR
 This project uses GitHub Actions for CI/CD with multi-architecture builds. See [`doc/github-actions.md`](doc/github-actions.md) for detailed information about:
 
 - Automated testing and linting
-- Multi-arch binary builds (Linux, macOS, Windows)
+- Multi-arch binary builds (Linux, macOS)
 - Docker image builds (Debian + Alpine variants)
 - Automated releases with checksums
 
 ### Supported Architectures
 
 **Native Binaries:**
-- Linux: `x86_64` (AMD64), `aarch64` (ARM64)
+- Linux: `x86_64` (AMD64), `aarch64` (ARM64)  
 - macOS: `x86_64` (Intel), `aarch64` (Apple Silicon)
-- Windows: `x86_64` (AMD64), `aarch64` (ARM64)
 
 **Docker Images:**
 - Linux: `amd64`, `arm64`
@@ -283,6 +294,6 @@ This project uses GitHub Actions for CI/CD with multi-architecture builds. See [
 
 **Made with ❤️ and Rust**
 
-[Report Bug](https://github.com/deimosfr/custom-ddns/issues) • [Request Feature](https://github.com/deimosfr/custom-ddns/issues) • [Documentation](https://docs.rs/custom-ddns) • [GitHub Actions](doc/github-actions.md)
+[Report Bug](https://github.com/deimosfr/custom-ddns/issues) • [Request Feature](https://github.com/deimosfr/custom-ddns/issues) • [Packages](https://github.com/deimosfr/custom-ddns/pkgs/container/custom-ddns)
 
 </div>
