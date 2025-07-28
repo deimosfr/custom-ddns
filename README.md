@@ -69,6 +69,7 @@ cargo build --release
 #### Pre-built Images (Recommended)
 
 ```bash
+# From GitHub Container Registry (ghcr.io)
 # Debian-based (default, recommended)
 docker pull ghcr.io/deimosfr/custom-ddns:latest
 docker run -v ./config.yaml:/app/config.yaml ghcr.io/deimosfr/custom-ddns:latest
@@ -77,13 +78,29 @@ docker run -v ./config.yaml:/app/config.yaml ghcr.io/deimosfr/custom-ddns:latest
 docker pull ghcr.io/deimosfr/custom-ddns:latest-alpine
 docker run -v ./config.yaml:/app/config.yaml ghcr.io/deimosfr/custom-ddns:latest-alpine
 
+# From Docker Hub (docker.io)
+# Debian-based (default, recommended)
+docker pull deimosfr/custom-ddns:latest
+docker run -v ./config.yaml:/app/config.yaml deimosfr/custom-ddns:latest
+
+# Alpine-based (smaller size)
+docker pull deimosfr/custom-ddns:latest-alpine
+docker run -v ./config.yaml:/app/config.yaml deimosfr/custom-ddns:latest-alpine
+
 # Specific version (replace v0.1.0 with desired version)
 docker pull ghcr.io/deimosfr/custom-ddns:v0.1.0
-docker pull ghcr.io/deimosfr/custom-ddns:v0.1.0-alpine
+docker pull deimosfr/custom-ddns:v0.1.0
 ```
 
 #### Available Image Tags
 
+**GitHub Container Registry (ghcr.io):**
+- `latest` - Latest Debian-based image (multi-arch: amd64, arm64)
+- `latest-alpine` - Latest Alpine-based image (multi-arch: amd64, arm64)  
+- `v{VERSION}` - Specific version Debian-based (e.g., `v0.1.0`)
+- `v{VERSION}-alpine` - Specific version Alpine-based (e.g., `v0.1.0-alpine`)
+
+**Docker Hub (docker.io):**
 - `latest` - Latest Debian-based image (multi-arch: amd64, arm64)
 - `latest-alpine` - Latest Alpine-based image (multi-arch: amd64, arm64)  
 - `v{VERSION}` - Specific version Debian-based (e.g., `v0.1.0`)

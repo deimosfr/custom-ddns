@@ -106,10 +106,17 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
 
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            deimosfr/custom-ddns
           tags: |
             type=ref,event=tag,suffix=${{ matrix.variant.suffix }}
             type=raw,value=latest,suffix=${{ matrix.variant.suffix }},enable={{is_default_branch}}
@@ -162,43 +169,15 @@ jobs:
             echo "RELEASE_TYPE=prerelease" >> $GITHUB_OUTPUT
           fi
 
+      - name: Generate Release Notes
+        uses: release-drafter/release-drafter@v5
+        id: release_drafter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: softprops/action-gh-release@v1
         with:
-          body: |
-            ## Docker Images
-
-            ### Debian-based (default)
-            ```bash
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_REF#refs/tags/}
-            ```
-
-            ### Alpine-based (smaller size)  
-            ```bash
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_REF#refs/tags/}-alpine
-            ```
-
-            ## Supported Architectures
-
-            **Binaries:**
-            - Linux: AMD64, ARM64
-            - macOS: AMD64, ARM64 (Apple Silicon)
-
-            **Docker Images:**
-            - Linux: AMD64, ARM64
-            - Available in both Debian and Alpine variants
-
-            ## Installation
-
-            ### Using pre-built binaries
-            1. Download the appropriate binary for your platform from the assets below
-            2. Make it executable: `chmod +x custom-ddns-*`
-            3. Run it: `./custom-ddns-*`
-
-            ### Using Docker
-            ```bash
-            # Debian-based (recommended)
-            docker run -v ./config.yaml:/app/config.yaml ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_REF#refs/tags/}
-            
-            # Alpine-based (smaller)
-            docker run -v ./config.yaml:/app/config.yaml ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_REF#refs/tags/}-alpine
-            ``` 
+          body: ${{ steps.release_drafter.outputs.body }}
+          draft: false
+          files: release/*
+          prerelease: ${{ steps.extract-notes.outputs.RELEASE_TYPE == 'prerelease' }} 
