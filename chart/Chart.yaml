@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: "0.1.0"
+description: A Helm chart for Custom DDNS service
+home: https://github.com/deimosfr/custom-ddns
+keywords:
+  - ddns
+  - dns
+  - cloudflare
+  - freebox
+name: custom-ddns
+sources:
+  - https://github.com/deimosfr/custom-ddns
+type: application
+version: 0.1.0 

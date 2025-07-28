@@ -1,0 +1,107 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/deimosfr/custom-ddns
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Priority class for pod scheduling
+priorityClassName: ""
+
+# Deployment strategy
+strategy:
+  type: Recreate
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 64Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+livenessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - "pgrep -f custom-ddns"
+  initialDelaySeconds: 30
+  periodSeconds: 30
+
+readinessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - "pgrep -f custom-ddns"
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+# Additional volumes on the output Deployment definition.
+volumes:
+- name: tmp
+  emptyDir: {}
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts:
+- name: tmp
+  mountPath: /tmp
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Configuration for the custom-ddns application
+config:
+  # Example configuration - customize according to your needs
+  dns_records:
+    - name: "example-record"
+      source:
+        check_interval_in_seconds: 300
+        freebox:
+          url: "http://mafreebox.freebox.fr"
+          token: "your-freebox-token-here"
+      domain:
+        provider: "Cloudflare"
+        domain_name: "example.com"
+        record_name: "home"
+        record_type: "A"
+        record_ttl: 300
+        api_key: "your-cloudflare-api-key-here"
+
+ 
