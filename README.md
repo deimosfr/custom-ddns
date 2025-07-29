@@ -276,25 +276,6 @@ graph LR
     style CF fill:#4fc3f7
 ```
 
-### Core Components
-
-- **Configuration Manager**: YAML-based configuration with validation
-- **IP Sources**: Pluggable architecture for different IP detection methods
-- **DNS Providers**: Abstracted DNS API implementations
-- **Monitor**: Async monitoring with configurable intervals
-- **Validator**: Input validation for IPs and DNS records
-
-## 🔧 Development & Contributing
-
-### GitHub Actions
-
-This project uses GitHub Actions for CI/CD with multi-architecture builds. See [`doc/github-actions.md`](doc/github-actions.md) for detailed information about:
-
-- Automated testing and linting
-- Multi-arch binary builds (Linux, macOS)
-- Docker image builds (Debian + Alpine variants)
-- Automated releases with checksums
-
 ### Supported Architectures
 
 **Native Binaries:**
