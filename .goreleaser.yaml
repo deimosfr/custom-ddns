@@ -1,0 +1,98 @@
+version: 2
+
+project_name: custom-ddns
+
+before:
+  hooks:
+    - rustup default stable
+    - cargo install --locked cargo-zigbuild
+
+builds:
+  - id: linux-amd64
+    binary: custom-ddns
+    goos:
+      - linux
+    goarch:
+      - amd64
+    hooks:
+      pre: cargo zigbuild --release --target x86_64-unknown-linux-gnu
+      post: cp target/x86_64-unknown-linux-gnu/release/custom-ddns {{ .Path }}
+    skip: true
+
+  - id: linux-arm64
+    binary: custom-ddns
+    goos:
+      - linux
+    goarch:
+      - arm64
+    hooks:
+      pre: cargo zigbuild --release --target aarch64-unknown-linux-gnu
+      post: cp target/aarch64-unknown-linux-gnu/release/custom-ddns {{ .Path }}
+    skip: true
+
+  - id: darwin-amd64
+    binary: custom-ddns
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    hooks:
+      pre: cargo zigbuild --release --target x86_64-apple-darwin
+      post: cp target/x86_64-apple-darwin/release/custom-ddns {{ .Path }}
+    skip: true
+
+  - id: darwin-arm64
+    binary: custom-ddns
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    hooks:
+      pre: cargo zigbuild --release --target aarch64-apple-darwin
+      post: cp target/aarch64-apple-darwin/release/custom-ddns {{ .Path }}
+    skip: true
+
+archives:
+  - format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+
+dockers:
+  - id: debian
+    image_templates:
+      - "ghcr.io/deimosfr/custom-ddns:{{ .Tag }}"
+      - "ghcr.io/deimosfr/custom-ddns:latest"
+      - "deimosfr/custom-ddns:{{ .Tag }}"
+      - "deimosfr/custom-ddns:latest"
+    dockerfile: Dockerfile
+
+  - id: alpine
+    image_templates:
+      - "ghcr.io/deimosfr/custom-ddns:{{ .Tag }}-alpine"
+      - "ghcr.io/deimosfr/custom-ddns:latest-alpine"
+      - "deimosfr/custom-ddns:{{ .Tag }}-alpine"
+      - "deimosfr/custom-ddns:latest-alpine"
+    dockerfile: Dockerfile.alpine
+
+checksum:
+  name_template: 'checksums.txt'
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - 'merge conflict'
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+
+release:
+  draft: false
+  prerelease: auto 
