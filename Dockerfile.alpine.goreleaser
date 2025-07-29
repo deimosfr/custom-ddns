@@ -1,0 +1,12 @@
+FROM alpine:latest
+
+RUN apk add --no-cache \
+    ca-certificates \
+    && adduser -D -s /bin/sh app
+
+WORKDIR /app
+COPY custom-ddns /app/custom-ddns
+RUN chown app:app /app/custom-ddns
+USER app
+
+ENTRYPOINT ["/app/custom-ddns"] 

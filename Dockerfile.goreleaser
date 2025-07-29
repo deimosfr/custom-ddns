@@ -1,0 +1,14 @@
+FROM debian:stable-slim
+
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -r -s /bin/false app
+
+WORKDIR /app
+COPY custom-ddns /app/custom-ddns
+RUN chown app:app /app/custom-ddns
+USER app
+
+ENTRYPOINT ["/app/custom-ddns"] 
