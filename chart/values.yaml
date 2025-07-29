@@ -86,6 +86,8 @@ tolerations: []
 
 affinity: {}
 
+logLevel: "info"
+
 # Configuration for the custom-ddns application
 config:
   # Example configuration - customize according to your needs

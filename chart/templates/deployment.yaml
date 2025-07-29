@@ -47,7 +47,7 @@ spec:
             - "8080"
           env:
             - name: RUST_LOG
-              value: "debug"
+              value: "{{ .Values.logLevel }}"
           ports:
             - name: health
               containerPort: 8080
