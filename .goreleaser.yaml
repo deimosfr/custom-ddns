@@ -9,49 +9,15 @@ before:
 
 builds:
   - id: linux-amd64
+    builder: rust
     binary: custom-ddns
-    goos:
-      - linux
-    goarch:
-      - amd64
-    hooks:
-      pre: cargo zigbuild --release --target x86_64-unknown-linux-gnu
-      post: cp target/x86_64-unknown-linux-gnu/release/custom-ddns {{ .Path }}
-    no_unique_dist_dir: true
-    skip_build: true
+    targets:
+      - x86_64-unknown-linux-gnu
+    command: zigbuild
+    flags:
+      - --release
 
-  - id: linux-arm64
-    binary: custom-ddns
-    goos:
-      - linux
-    goarch:
-      - arm64
-    hooks:
-      pre: cargo zigbuild --release --target aarch64-unknown-linux-gnu
-      post: cp target/aarch64-unknown-linux-gnu/release/custom-ddns {{ .Path }}
-    skip: true
 
-  - id: darwin-amd64
-    binary: custom-ddns
-    goos:
-      - darwin
-    goarch:
-      - amd64
-    hooks:
-      pre: cargo zigbuild --release --target x86_64-apple-darwin
-      post: cp target/x86_64-apple-darwin/release/custom-ddns {{ .Path }}
-    skip: true
-
-  - id: darwin-arm64
-    binary: custom-ddns
-    goos:
-      - darwin
-    goarch:
-      - arm64
-    hooks:
-      pre: cargo zigbuild --release --target aarch64-apple-darwin
-      post: cp target/aarch64-apple-darwin/release/custom-ddns {{ .Path }}
-    skip: true
 
 archives:
   - format: tar.gz
