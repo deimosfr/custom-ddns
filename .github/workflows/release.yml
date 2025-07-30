@@ -29,10 +29,13 @@ jobs:
         with:
           version: 0.11.0
 
-      - name: Install cargo-zigbuild
+      - name: Install cargo-zigbuild and targets
         run: |
           cargo install --locked cargo-zigbuild
           rustup target add x86_64-unknown-linux-gnu
+          rustup target add aarch64-unknown-linux-gnu
+          rustup target add x86_64-apple-darwin
+          rustup target add aarch64-apple-darwin
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
