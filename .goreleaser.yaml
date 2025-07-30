@@ -29,28 +29,7 @@ archives:
         format: zip
     name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
 
-dockers:
-  - id: debian
-    image_templates:
-      - "ghcr.io/deimosfr/custom-ddns:{{ .Tag }}"
-      - "ghcr.io/deimosfr/custom-ddns:latest"
-      - "deimosfr/custom-ddns:{{ .Tag }}"
-      - "deimosfr/custom-ddns:latest"
-    dockerfile: Dockerfile.goreleaser
-    build_flag_templates:
-      - "--platform=linux/amd64"
-    use: buildx
 
-  - id: alpine
-    image_templates:
-      - "ghcr.io/deimosfr/custom-ddns:{{ .Tag }}-alpine"
-      - "ghcr.io/deimosfr/custom-ddns:latest-alpine"
-      - "deimosfr/custom-ddns:{{ .Tag }}-alpine"
-      - "deimosfr/custom-ddns:latest-alpine"
-    dockerfile: Dockerfile.alpine.goreleaser
-    build_flag_templates:
-      - "--platform=linux/amd64"
-    use: buildx
 
 checksum:
   name_template: 'checksums.txt'
