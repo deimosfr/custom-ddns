@@ -131,6 +131,9 @@ async fn health_check() -> Json<serde_json::Value> {
     Json(json!({
         "status": "healthy",
         "service": "custom-ddns",
-        "timestamp": chrono::Utc::now().to_rfc3339()
+        "timestamp": std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs()
     }))
 }
