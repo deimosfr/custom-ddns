@@ -17,6 +17,16 @@ builds:
     command: zigbuild
     flags:
       - --release
+  
+  - id: macos-builds
+    builder: rust
+    binary: custom-ddns
+    targets:
+      - x86_64-apple-darwin         # macOS Intel
+      - aarch64-apple-darwin        # macOS Apple Silicon
+    command: build
+    flags:
+      - --release
 
 
 
