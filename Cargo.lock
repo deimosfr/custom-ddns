@@ -361,7 +361,6 @@ dependencies = [
  "anyhow",
  "async-trait",
  "axum",
- "chrono",
  "clap",
  "cloudflare",
  "governor",

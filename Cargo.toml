@@ -22,6 +22,3 @@ sha1 = "0.10.6"
 hex = "0.4.3"
 cloudflare = { version = "0.14.0", features = ["rustls-tls"], default-features = false }
 axum = "0.8.4"
-
-[patch.crates-io]
-chrono = { version = "0.4.41", features = ["alloc", "serde", "std"], default-features = false }
