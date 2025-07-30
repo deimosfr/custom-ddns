@@ -17,6 +17,8 @@ builds:
     hooks:
       pre: cargo zigbuild --release --target x86_64-unknown-linux-gnu
       post: cp target/x86_64-unknown-linux-gnu/release/custom-ddns {{ .Path }}
+    no_unique_dist_dir: true
+    skip_build: true
 
   - id: linux-arm64
     binary: custom-ddns
