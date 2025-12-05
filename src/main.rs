@@ -62,10 +62,7 @@ async fn main() -> Result<(), anyhow::Error> {
         }
         Err(e) => {
             error!("Failed to load configuration: {}", e);
-            Err(anyhow::anyhow!(
-                "Error loading configuration: {}",
-                e.to_string()
-            ))
+            Err(anyhow::anyhow!("Error loading configuration: {}", e))
         }
     }
 }
